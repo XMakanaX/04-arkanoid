@@ -198,6 +198,13 @@ function handleBlockCollision() {
 
   breakSound.currentTime = 0;
   breakSound.play();
+
+  checkWin();
+}
+
+function checkWin() {
+  const allDead = gameState.blocks.every( ( block ) => !block.alive );
+  if ( allDead ) gameState.status = 'win';
 }
 
 function updateExplosions() {
