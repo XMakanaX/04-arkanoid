@@ -1,6 +1,6 @@
 # Mejora de animación de explosión de bloques
 
-**Estado:** aprobado
+**Estado:** Implementado
 **Depende de:** 01-arkanoid-mvp
 **Fecha:** 2026-07-10
 **Objetivo:** Mejorar la animación de explosión de bloques (escala creciente + fade) usando únicamente los frames del spritesheet ya existentes, sin agregar assets ni efectos nuevos.
@@ -34,14 +34,14 @@ Sin cambios de estructura: `explosions[]` sigue siendo `{ x, y, color, start }`.
 
 ## Criterios de aceptación
 
-- [ ] `EXPLOSION_DURATION` es 400 en `assets/spritesheet.js`
-- [ ] Al romper bloque, la explosión crece visualmente desde 1.0x hasta 1.8x del tamaño del bloque a lo largo de la animación
-- [ ] El escalado se expande desde el centro del bloque (no se desplaza hacia una esquina)
-- [ ] La explosión mantiene opacidad completa (alpha 1.0) durante la primera mitad (0-200ms) y se desvanece a 0 durante la segunda mitad (200-400ms)
-- [ ] La animación completa dura 400ms antes de que la explosión desaparezca del array `explosions`
-- [ ] Los 4 frames de `EXPLOSION_FRAMES` se siguen usando y ciclan correctamente en la nueva duración de 400ms
-- [ ] No se agregan sprites nuevos ni dibujos procedurales (partículas, formas) fuera de escala/alpha sobre los frames existentes
-- [ ] El resto del juego (sonido, puntaje, colisiones, paddle/pared) no cambia de comportamiento
+- [x] `EXPLOSION_DURATION` es 400 en `assets/spritesheet.js`
+- [x] Al romper bloque, la explosión crece visualmente desde 1.0x hasta 1.8x del tamaño del bloque a lo largo de la animación
+- [x] El escalado se expande desde el centro del bloque (no se desplaza hacia una esquina)
+- [x] La explosión mantiene opacidad completa (alpha 1.0) durante la primera mitad (0-200ms) y se desvanece a 0 durante la segunda mitad (200-400ms)
+- [x] La animación completa dura 400ms antes de que la explosión desaparezca del array `explosions`
+- [x] Los 4 frames de `EXPLOSION_FRAMES` se siguen usando y ciclan correctamente en la nueva duración de 400ms
+- [x] No se agregan sprites nuevos ni dibujos procedurales (partículas, formas) fuera de escala/alpha sobre los frames existentes
+- [x] El resto del juego (sonido, puntaje, colisiones, paddle/pared) no cambia de comportamiento
 
 ## Decisiones tomadas y descartadas
 
