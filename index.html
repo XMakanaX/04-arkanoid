@@ -6,7 +6,15 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <canvas id="game" width="800" height="600"></canvas>
+  <div id="game-wrap">
+    <canvas id="game" width="800" height="600"></canvas>
+    <div id="overlay" class="hidden">
+      <h2 id="overlay-title"></h2>
+      <p id="overlay-score"></p>
+      <p id="overlay-highscore"></p>
+      <button id="overlay-restart">Reiniciar</button>
+    </div>
+  </div>
 
   <script src="assets/spritesheet.js"></script>
   <script src="main.js"></script>

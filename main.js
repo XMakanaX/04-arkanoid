@@ -216,10 +216,46 @@ function updateExplosions() {
   }
 }
 
+const overlay = document.getElementById( 'overlay' );
+const overlayTitle = document.getElementById( 'overlay-title' );
+const overlayScore = document.getElementById( 'overlay-score' );
+const overlayRestart = document.getElementById( 'overlay-restart' );
+
+function updateOverlay() {
+  if ( gameState.status !== 'win' && gameState.status !== 'gameover' ) {
+    overlay.classList.add( 'hidden' );
+    return;
+  }
+
+  overlay.classList.remove( 'hidden' );
+  overlayTitle.textContent = gameState.status === 'win' ? '¡Victoria!' : 'Game Over';
+  overlayScore.textContent = 'Puntaje: ' + gameState.score;
+}
+
+function resetGame() {
+  gameState.status = 'ready';
+  gameState.score = 0;
+  gameState.lives = 3;
+  gameState.blocks = buildBlocks();
+  gameState.paddle.x = ( canvas.width - gameState.paddle.w ) / 2;
+  gameState.ball.stuckToPaddle = true;
+  gameState.ball.dx = 0;
+  gameState.ball.dy = 0;
+  snapBallToPaddle();
+  explosions.length = 0;
+}
+
+overlayRestart.addEventListener( 'click', resetGame );
+
+window.addEventListener( 'keydown', ( e ) => {
+  if ( e.key === 'Enter' && ( gameState.status === 'win' || gameState.status === 'gameover' ) ) resetGame();
+} );
+
 function loop() {
   updatePaddle();
   updateBall();
   updateExplosions();
+  updateOverlay();
   draw();
   requestAnimationFrame( loop );
 }
