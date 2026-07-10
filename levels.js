@@ -1,9 +1,9 @@
-const BLOCK_W = 78;
-const BLOCK_H = 16;
+const BLOCK_W = 86;
+const BLOCK_H = 20;
 const BLOCK_GAP = 2;
 const BLOCK_ROWS = 6;
-const BLOCK_COLS = 10;
-const BLOCK_MARGIN_X = 1;
+const BLOCK_COLS = 9;
+const BLOCK_MARGIN_X = 5;
 const BLOCK_MARGIN_TOP = 50;
 const ROW_COLORS = [ 'red', 'yellow', 'green', 'cyan', 'magenta', 'hotpink' ];
 
@@ -28,10 +28,10 @@ function isCoveredByShape( shape, row, col ) {
     case 'escalera':
       return col >= row * 3;
     case 'diamante':
-      return Math.abs( row - 2.5 ) + Math.abs( col - 4.5 ) <= 3;
+      return Math.abs( row - 2.5 ) + Math.abs( col - ( BLOCK_COLS - 1 ) / 2 ) <= 3;
     case 'piramide-invertida': {
       const halfWidth = Math.max( 1, 5 - row );
-      return Math.abs( col - 4.5 ) <= halfWidth;
+      return Math.abs( col - ( BLOCK_COLS - 1 ) / 2 ) <= halfWidth;
     }
   }
 }

@@ -6,9 +6,10 @@ const gameState = {
   level: 1,
   score: 0,
   lives: 3,
-  paddle: { x: ( canvas.width - 162 ) / 2, y: canvas.height - 40, w: 162, h: 14 },
+  paddle: { x: ( canvas.width - 81 ) / 2, y: canvas.height - 40, w: 81, h: 7 },
   ball: { x: 0, y: 0, dx: 0, dy: 0, radius: 8, stuckToPaddle: true },
   blocks: [],
+  paused: false,
 };
 
 gameState.blocks = generateBlocksForLevel( 1 );
@@ -51,6 +52,7 @@ snapBallToPaddle();
 
 function launchBall() {
   if ( gameState.status === 'gameover' || gameState.status === 'win' ) return;
+  if ( gameState.paused ) return;
   if ( !gameState.ball.stuckToPaddle ) return;
   const speed = ballSpeedForLevel( gameState.level );
   gameState.ball.stuckToPaddle = false;
@@ -278,16 +280,33 @@ function resetGame() {
 
 overlayRestart.addEventListener( 'click', resetGame );
 
+const pauseOverlay = document.getElementById( 'pause-overlay' );
+const pauseResumeBtn = document.getElementById( 'pause-resume' );
+
+function togglePause() {
+  if ( gameState.status === 'gameover' || gameState.status === 'win' ) return;
+  gameState.paused = !gameState.paused;
+  pauseOverlay.classList.toggle( 'hidden', !gameState.paused );
+}
+
+pauseResumeBtn.addEventListener( 'click', togglePause );
+
+window.addEventListener( 'keydown', ( e ) => {
+  if ( e.key === 'p' || e.key === 'P' ) togglePause();
+} );
+
 window.addEventListener( 'keydown', ( e ) => {
   if ( e.key === 'Enter' && ( gameState.status === 'win' || gameState.status === 'gameover' ) ) resetGame();
 } );
 
 function loop() {
-  updatePaddle();
-  updateBall();
-  updateExplosions();
+  if ( !gameState.paused ) {
+    updatePaddle();
+    updateBall();
+    updateExplosions();
+    updateLevelupOverlay();
+  }
   updateOverlay();
-  updateLevelupOverlay();
   draw();
   requestAnimationFrame( loop );
 }
@@ -322,11 +341,14 @@ function draw() {
   }
 
   ctx.fillStyle = '#fff';
-  ctx.font = '16px sans-serif';
+  ctx.font = 'bold 18px "Courier New", monospace';
   ctx.textBaseline = 'top';
+
   ctx.textAlign = 'left';
-  ctx.fillText( 'Puntaje: ' + gameState.score, 10, 10 );
-  ctx.fillText( 'Nivel: ' + gameState.level, 10, 30 );
+  ctx.fillText( 'PUNTAJE: ' + gameState.score, 10, 12 );
+
+  ctx.textAlign = 'center';
+  ctx.fillText( 'NIVEL: ' + gameState.level, canvas.width / 2, 12 );
 
   const lifeSize = 16;
   const lifeGap = 6;
@@ -334,6 +356,7 @@ function draw() {
     const x = canvas.width - 10 - ( i + 1 ) * lifeSize - i * lifeGap;
     drawSprite( ctx, 'ball', x, 10, lifeSize, lifeSize );
   }
+
 }
 
 loadSpritesheet( loop );
