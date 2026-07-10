@@ -1,6 +1,6 @@
 # Mejora de animación de explosión de bloques
 
-**Estado:** Draft
+**Estado:** aprobado
 **Depende de:** 01-arkanoid-mvp
 **Fecha:** 2026-07-10
 **Objetivo:** Mejorar la animación de explosión de bloques (escala creciente + fade) usando únicamente los frames del spritesheet ya existentes, sin agregar assets ni efectos nuevos.
