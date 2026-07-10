@@ -63,20 +63,20 @@ const gameState = {
 
 ## Criterios de aceptación
 
-- [ ] Canvas de 800x600px se renderiza correctamente en el navegador
-- [ ] Grid de 60 bloques (6x10) se muestra con color distinto por fila
-- [ ] Paddle se mueve con mouse y con teclado (flechas/A-D), sin salirse del canvas
-- [ ] Bola arranca pegada al paddle y se lanza con click o espacio
-- [ ] Bola rebota correctamente en paredes, paddle y bloques
-- [ ] Al golpear un bloque: bloque desaparece, se reproduce animación de explosión, suena `break-sound`, suma 10 puntos
-- [ ] Score visible en pantalla se actualiza en tiempo real
-- [ ] Al caer la bola bajo el paddle: se resta 1 vida y la bola se reposiciona pegada al paddle (si quedan vidas)
-- [ ] Al llegar a 0 vidas: se muestra overlay de Game Over con puntaje final
-- [ ] Al romper todos los bloques: se muestra overlay de Victoria con puntaje final
-- [ ] High score se guarda en localStorage y persiste entre recargas de página
-- [ ] Overlay muestra el high score guardado
-- [ ] Desde el overlay se puede reiniciar la partida (botón o tecla)
-- [ ] Sonido `ball-bounce` suena en cada rebote de la bola
+- [x] Canvas de 800x600px se renderiza correctamente en el navegador
+- [x] Grid de 60 bloques (6x10) se muestra con color distinto por fila
+- [x] Paddle se mueve con mouse y con teclado (flechas/A-D), sin salirse del canvas
+- [x] Bola arranca pegada al paddle y se lanza con click o espacio
+- [x] Bola rebota correctamente en paredes, paddle y bloques
+- [x] Al golpear un bloque: bloque desaparece, se reproduce animación de explosión, suena `break-sound`, suma 10 puntos
+- [x] Score visible en pantalla se actualiza en tiempo real
+- [x] Al caer la bola bajo el paddle: se resta 1 vida y la bola se reposiciona pegada al paddle (si quedan vidas)
+- [x] Al llegar a 0 vidas: se muestra overlay de Game Over con puntaje final
+- [x] Al romper todos los bloques: se muestra overlay de Victoria con puntaje final
+- [x] High score se guarda en localStorage y persiste entre recargas de página
+- [x] Overlay muestra el high score guardado
+- [x] Desde el overlay se puede reiniciar la partida (botón o tecla)
+- [x] Sonido `ball-bounce` suena en cada rebote de la bola
 
 ## Decisiones tomadas y descartadas
 

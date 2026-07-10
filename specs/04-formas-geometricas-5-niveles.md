@@ -1,6 +1,6 @@
 # Formas geométricas y 5 niveles
 
-**Estado:** aprobado
+**Estado:** implementado
 **Depende de:** 01-arkanoid-mvp, 02-explosion-animation-mejora, 03-progresion-niveles
 **Fecha:** 2026-07-10
 **Objetivo:** Reemplazar los huecos aleatorios de la progresión de niveles por 5 formas geométricas fijas y crecientes en dificultad (una por nivel), reduciendo el juego de 10 a 5 niveles con velocidad de bola y vidas extra recalibradas al mismo tope final.
