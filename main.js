@@ -272,6 +272,24 @@ function updateHighScore() {
   }
 }
 
+const levelupOverlay = document.getElementById( 'levelup-overlay' );
+const levelupTitle = document.getElementById( 'levelup-title' );
+let levelupTimeout = null;
+
+function updateLevelupOverlay() {
+  if ( gameState.status !== 'levelup' ) return;
+  if ( levelupTimeout ) return;
+
+  levelupTitle.textContent = '¡Nivel ' + gameState.level + '!';
+  levelupOverlay.classList.remove( 'hidden' );
+
+  levelupTimeout = setTimeout( () => {
+    levelupOverlay.classList.add( 'hidden' );
+    gameState.status = 'ready';
+    levelupTimeout = null;
+  }, 1500 );
+}
+
 const overlay = document.getElementById( 'overlay' );
 const overlayTitle = document.getElementById( 'overlay-title' );
 const overlayScore = document.getElementById( 'overlay-score' );
@@ -315,6 +333,7 @@ function loop() {
   updateBall();
   updateExplosions();
   updateOverlay();
+  updateLevelupOverlay();
   draw();
   requestAnimationFrame( loop );
 }
