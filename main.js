@@ -67,8 +67,69 @@ function updatePaddle() {
   gameState.paddle.x = clampPaddleX( gameState.paddle.x );
 }
 
+const BALL_SPEED = 5;
+
+function snapBallToPaddle() {
+  gameState.ball.x = gameState.paddle.x + gameState.paddle.w / 2;
+  gameState.ball.y = gameState.paddle.y - gameState.ball.radius;
+}
+
+snapBallToPaddle();
+
+function launchBall() {
+  if ( !gameState.ball.stuckToPaddle ) return;
+  gameState.ball.stuckToPaddle = false;
+  gameState.ball.dx = BALL_SPEED * 0.6;
+  gameState.ball.dy = -BALL_SPEED;
+  gameState.status = 'playing';
+}
+
+window.addEventListener( 'keydown', ( e ) => {
+  if ( e.key === ' ' ) launchBall();
+} );
+
+canvas.addEventListener( 'click', launchBall );
+
+function updateBall() {
+  const ball = gameState.ball;
+
+  if ( ball.stuckToPaddle ) {
+    snapBallToPaddle();
+    return;
+  }
+
+  ball.x += ball.dx;
+  ball.y += ball.dy;
+
+  if ( ball.x - ball.radius < 0 ) {
+    ball.x = ball.radius;
+    ball.dx *= -1;
+  } else if ( ball.x + ball.radius > canvas.width ) {
+    ball.x = canvas.width - ball.radius;
+    ball.dx *= -1;
+  }
+
+  if ( ball.y - ball.radius < 0 ) {
+    ball.y = ball.radius;
+    ball.dy *= -1;
+  }
+
+  const paddle = gameState.paddle;
+  const hitsPaddle = ball.dy > 0 &&
+    ball.x + ball.radius > paddle.x &&
+    ball.x - ball.radius < paddle.x + paddle.w &&
+    ball.y + ball.radius > paddle.y &&
+    ball.y - ball.radius < paddle.y + paddle.h;
+
+  if ( hitsPaddle ) {
+    ball.y = paddle.y - ball.radius;
+    ball.dy *= -1;
+  }
+}
+
 function loop() {
   updatePaddle();
+  updateBall();
   draw();
   requestAnimationFrame( loop );
 }
@@ -82,6 +143,9 @@ function draw() {
   }
 
   drawSprite( ctx, 'paddle', gameState.paddle.x, gameState.paddle.y, gameState.paddle.w, gameState.paddle.h );
+
+  const ball = gameState.ball;
+  drawSprite( ctx, 'ball', ball.x - ball.radius, ball.y - ball.radius, ball.radius * 2, ball.radius * 2 );
 }
 
 loadSpritesheet( loop );
