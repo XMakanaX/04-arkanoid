@@ -38,6 +38,41 @@ function buildBlocks() {
 
 gameState.blocks = buildBlocks();
 
+const PADDLE_SPEED = 8;
+const keys = { left: false, right: false };
+
+window.addEventListener( 'keydown', ( e ) => {
+  if ( e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A' ) keys.left = true;
+  if ( e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D' ) keys.right = true;
+} );
+
+window.addEventListener( 'keyup', ( e ) => {
+  if ( e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A' ) keys.left = false;
+  if ( e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D' ) keys.right = false;
+} );
+
+canvas.addEventListener( 'mousemove', ( e ) => {
+  const rect = canvas.getBoundingClientRect();
+  const mouseX = e.clientX - rect.left;
+  gameState.paddle.x = clampPaddleX( mouseX - gameState.paddle.w / 2 );
+} );
+
+function clampPaddleX( x ) {
+  return Math.max( 0, Math.min( canvas.width - gameState.paddle.w, x ) );
+}
+
+function updatePaddle() {
+  if ( keys.left ) gameState.paddle.x -= PADDLE_SPEED;
+  if ( keys.right ) gameState.paddle.x += PADDLE_SPEED;
+  gameState.paddle.x = clampPaddleX( gameState.paddle.x );
+}
+
+function loop() {
+  updatePaddle();
+  draw();
+  requestAnimationFrame( loop );
+}
+
 function draw() {
   ctx.clearRect( 0, 0, canvas.width, canvas.height );
 
@@ -49,4 +84,4 @@ function draw() {
   drawSprite( ctx, 'paddle', gameState.paddle.x, gameState.paddle.y, gameState.paddle.w, gameState.paddle.h );
 }
 
-loadSpritesheet( draw );
+loadSpritesheet( loop );
