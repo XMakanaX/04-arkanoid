@@ -304,10 +304,13 @@ function draw() {
     const frameIndex = Math.min( 3, Math.floor( ( now - explosion.start ) / EXPLOSION_FRAME_DURATION ) );
     const frame = EXPLOSION_FRAMES[ explosion.color ][ frameIndex ];
     const scale = 1.0 + progress * 0.8;
+    const alpha = progress < 0.5 ? 1 : 1 - ( progress - 0.5 ) * 2;
     ctx.save();
     ctx.translate( explosion.x + BLOCK_W / 2, explosion.y + BLOCK_H / 2 );
     ctx.scale( scale, scale );
+    ctx.globalAlpha = alpha;
     drawFrame( ctx, frame, -BLOCK_W / 2, -BLOCK_H / 2, BLOCK_W, BLOCK_H );
+    ctx.globalAlpha = 1;
     ctx.restore();
   }
 
