@@ -125,11 +125,73 @@ function updateBall() {
     ball.y = paddle.y - ball.radius;
     ball.dy *= -1;
   }
+
+  handleBlockCollision();
+}
+
+const breakSound = new Audio( 'assets/sounds/break-sound.mp3' );
+const explosions = [];
+const EXPLOSION_FRAME_DURATION = EXPLOSION_DURATION / 4;
+
+function handleBlockCollision() {
+  const ball = gameState.ball;
+  let closestBlock = null;
+  let closestDist = Infinity;
+  let closestX = 0;
+  let closestY = 0;
+
+  for ( const block of gameState.blocks ) {
+    if ( !block.alive ) continue;
+
+    const cx = Math.max( block.x, Math.min( ball.x, block.x + block.w ) );
+    const cy = Math.max( block.y, Math.min( ball.y, block.y + block.h ) );
+    const dx = ball.x - cx;
+    const dy = ball.y - cy;
+    const dist = dx * dx + dy * dy;
+
+    if ( dist <= ball.radius * ball.radius && dist < closestDist ) {
+      closestDist = dist;
+      closestBlock = block;
+      closestX = cx;
+      closestY = cy;
+    }
+  }
+
+  if ( !closestBlock ) return;
+
+  closestBlock.alive = false;
+  gameState.score += 10;
+
+  const hitX = closestX !== ball.x;
+  const hitY = closestY !== ball.y;
+  if ( hitX ) ball.dx *= -1;
+  if ( hitY ) ball.dy *= -1;
+  if ( !hitX && !hitY ) ball.dy *= -1;
+
+  explosions.push( {
+    x: closestBlock.x,
+    y: closestBlock.y,
+    color: closestBlock.color,
+    start: Date.now(),
+  } );
+
+  breakSound.currentTime = 0;
+  breakSound.play();
+}
+
+function updateExplosions() {
+  const now = Date.now();
+  for ( let i = explosions.length - 1; i >= 0; i-- ) {
+    if ( now - explosions[ i ].start >= EXPLOSION_DURATION ) {
+      explosions.splice( i, 1 );
+    }
+  }
 }
 
 function loop() {
   updatePaddle();
   updateBall();
+  updateExplosions();
   draw();
   requestAnimationFrame( loop );
 }
@@ -146,6 +208,13 @@ function draw() {
 
   const ball = gameState.ball;
   drawSprite( ctx, 'ball', ball.x - ball.radius, ball.y - ball.radius, ball.radius * 2, ball.radius * 2 );
+
+  const now = Date.now();
+  for ( const explosion of explosions ) {
+    const frameIndex = Math.min( 3, Math.floor( ( now - explosion.start ) / EXPLOSION_FRAME_DURATION ) );
+    const frame = EXPLOSION_FRAMES[ explosion.color ][ frameIndex ];
+    drawFrame( ctx, frame, explosion.x, explosion.y, BLOCK_W, BLOCK_H );
+  }
 }
 
 loadSpritesheet( loop );
