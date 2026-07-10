@@ -1,6 +1,6 @@
 # Progresión de niveles
 
-**Estado:** aprobado
+**Estado:** implementado
 **Depende de:** 01-arkanoid-mvp, 02-explosion-animation-mejora
 **Fecha:** 2026-07-10
 **Objetivo:** Al romper todos los bloques de un nivel, avanzar automáticamente al siguiente (hasta 10), con patrón de bloques generado proceduralmente con semilla fija y velocidad de bola creciente por nivel.
@@ -57,18 +57,18 @@ Sin cambios en localStorage (`arkanoid-highscore` sigue igual).
 
 ## Criterios de aceptación
 
-- [ ] Nivel 1 muestra grid completo de 60 bloques (6x10), igual que MVP actual
-- [ ] Al romper todos los bloques de un nivel < 10, avanza automáticamente al siguiente nivel sin mostrar overlay de Victoria
-- [ ] Niveles 2-10 muestran patrón con huecos (celdas sin bloque), y el mismo nivel genera siempre el mismo patrón al recargar/rejugar
-- [ ] Velocidad de bola aumenta en cada nivel según `BALL_SPEED * (1 + 0.08 * (nivel-1))`, verificable nivel 1 vs nivel 10 (~1.72x)
-- [ ] Puntaje NO se resetea al pasar de nivel
-- [ ] Al pasar de nivel (1→9), `gameState.lives` aumenta en 1 respecto al valor que tenía antes de completar el nivel
-- [ ] Al completar nivel 10, NO se suma vida extra (va directo a Victoria)
-- [ ] Al pasar de nivel se muestra overlay "¡Nivel N!" que desaparece solo tras 1.5s, sin requerir click/tecla
-- [ ] HUD muestra "Nivel: N" visible junto al puntaje durante el juego
-- [ ] Al romper todos los bloques del nivel 10, se muestra el overlay de Victoria existente con puntaje final
-- [ ] Al recargar la página (F5), el juego siempre arranca en nivel 1 (sin persistencia de nivel)
-- [ ] High score en localStorage sigue funcionando igual que antes
+- [x] Nivel 1 muestra grid completo de 60 bloques (6x10), igual que MVP actual
+- [x] Al romper todos los bloques de un nivel < 10, avanza automáticamente al siguiente nivel sin mostrar overlay de Victoria
+- [x] Niveles 2-10 muestran patrón con huecos (celdas sin bloque), y el mismo nivel genera siempre el mismo patrón al recargar/rejugar
+- [x] Velocidad de bola aumenta en cada nivel según `BALL_SPEED * (1 + 0.08 * (nivel-1))`, verificable nivel 1 vs nivel 10 (~1.72x)
+- [x] Puntaje NO se resetea al pasar de nivel
+- [x] Al pasar de nivel (1→9), `gameState.lives` aumenta en 1 respecto al valor que tenía antes de completar el nivel
+- [x] Al completar nivel 10, NO se suma vida extra (va directo a Victoria)
+- [x] Al pasar de nivel se muestra overlay "¡Nivel N!" que desaparece solo tras 1.5s, sin requerir click/tecla
+- [x] HUD muestra "Nivel: N" visible junto al puntaje durante el juego
+- [x] Al romper todos los bloques del nivel 10, se muestra el overlay de Victoria existente con puntaje final
+- [x] Al recargar la página (F5), el juego siempre arranca en nivel 1 (sin persistencia de nivel)
+- [x] High score en localStorage sigue funcionando igual que antes
 
 ## Decisiones tomadas y descartadas
 
