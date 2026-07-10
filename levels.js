@@ -9,24 +9,39 @@ const ROW_COLORS = [ 'red', 'yellow', 'green', 'cyan', 'magenta', 'hotpink' ];
 
 const BALL_SPEED = 5;
 
-function mulberry32( seed ) {
-  let a = seed;
-  return function () {
-    a |= 0;
-    a = ( a + 0x6D2B79F5 ) | 0;
-    let t = Math.imul( a ^ ( a >>> 15 ), 1 | a );
-    t = ( t + Math.imul( t ^ ( t >>> 7 ), 61 | t ) ) ^ t;
-    return ( ( t ^ ( t >>> 14 ) ) >>> 0 ) / 4294967296;
-  };
+const MAX_LEVEL = 5;
+
+const LEVEL_SHAPES = [
+  'checkerboard',
+  'marco',
+  'escalera',
+  'diamante',
+  'piramide-invertida',
+];
+
+function isCoveredByShape( shape, row, col ) {
+  switch ( shape ) {
+    case 'checkerboard':
+      return ( row + col ) % 2 === 0;
+    case 'marco':
+      return row === 0 || row === BLOCK_ROWS - 1 || col === 0 || col === BLOCK_COLS - 1;
+    case 'escalera':
+      return col >= row * 3;
+    case 'diamante':
+      return Math.abs( row - 2.5 ) + Math.abs( col - 4.5 ) <= 3;
+    case 'piramide-invertida': {
+      const halfWidth = Math.max( 1, 5 - row );
+      return Math.abs( col - 4.5 ) <= halfWidth;
+    }
+  }
 }
 
 function generateBlocksForLevel( level ) {
-  const random = mulberry32( level );
-  const gapChance = level === 1 ? 0 : level * 0.03;
+  const shape = LEVEL_SHAPES[ level - 1 ];
   const blocks = [];
   for ( let row = 0; row < BLOCK_ROWS; row++ ) {
     for ( let col = 0; col < BLOCK_COLS; col++ ) {
-      if ( random() < gapChance ) continue;
+      if ( !isCoveredByShape( shape, row, col ) ) continue;
       blocks.push( {
         x: BLOCK_MARGIN_X + col * ( BLOCK_W + BLOCK_GAP ),
         y: BLOCK_MARGIN_TOP + row * ( BLOCK_H + BLOCK_GAP ),
@@ -41,5 +56,5 @@ function generateBlocksForLevel( level ) {
 }
 
 function ballSpeedForLevel( level ) {
-  return BALL_SPEED * ( 1 + 0.08 * ( level - 1 ) );
+  return BALL_SPEED * ( 1 + 0.18 * ( level - 1 ) );
 }
