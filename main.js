@@ -12,6 +12,7 @@ const ROW_COLORS = [ 'red', 'yellow', 'green', 'cyan', 'magenta', 'hotpink' ];
 
 const gameState = {
   status: 'ready',
+  level: 1,
   score: 0,
   lives: 3,
   paddle: { x: ( canvas.width - 162 ) / 2, y: canvas.height - 40, w: 162, h: 14 },
@@ -83,6 +84,10 @@ function updatePaddle() {
 
 const BALL_SPEED = 5;
 
+function ballSpeedForLevel( level ) {
+  return BALL_SPEED * ( 1 + 0.08 * ( level - 1 ) );
+}
+
 function snapBallToPaddle() {
   gameState.ball.x = gameState.paddle.x + gameState.paddle.w / 2;
   gameState.ball.y = gameState.paddle.y - gameState.ball.radius;
@@ -93,9 +98,10 @@ snapBallToPaddle();
 function launchBall() {
   if ( gameState.status === 'gameover' || gameState.status === 'win' ) return;
   if ( !gameState.ball.stuckToPaddle ) return;
+  const speed = ballSpeedForLevel( gameState.level );
   gameState.ball.stuckToPaddle = false;
-  gameState.ball.dx = BALL_SPEED * 0.6;
-  gameState.ball.dy = -BALL_SPEED;
+  gameState.ball.dx = speed * 0.6;
+  gameState.ball.dy = -speed;
   gameState.status = 'playing';
 }
 
@@ -273,6 +279,7 @@ function updateOverlay() {
 
 function resetGame() {
   gameState.status = 'ready';
+  gameState.level = 1;
   gameState.score = 0;
   gameState.lives = 3;
   gameState.blocks = generateBlocksForLevel( 1 );
@@ -333,6 +340,7 @@ function draw() {
   ctx.textBaseline = 'top';
   ctx.textAlign = 'left';
   ctx.fillText( 'Puntaje: ' + gameState.score, 10, 10 );
+  ctx.fillText( 'Nivel: ' + gameState.level, 10, 30 );
 
   const lifeSize = 16;
   const lifeGap = 6;
