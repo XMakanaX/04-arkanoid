@@ -300,9 +300,15 @@ function draw() {
 
   const now = Date.now();
   for ( const explosion of explosions ) {
+    const progress = ( now - explosion.start ) / EXPLOSION_DURATION;
     const frameIndex = Math.min( 3, Math.floor( ( now - explosion.start ) / EXPLOSION_FRAME_DURATION ) );
     const frame = EXPLOSION_FRAMES[ explosion.color ][ frameIndex ];
-    drawFrame( ctx, frame, explosion.x, explosion.y, BLOCK_W, BLOCK_H );
+    const scale = 1.0 + progress * 0.8;
+    ctx.save();
+    ctx.translate( explosion.x + BLOCK_W / 2, explosion.y + BLOCK_H / 2 );
+    ctx.scale( scale, scale );
+    drawFrame( ctx, frame, -BLOCK_W / 2, -BLOCK_H / 2, BLOCK_W, BLOCK_H );
+    ctx.restore();
   }
 
   ctx.fillStyle = '#fff';
