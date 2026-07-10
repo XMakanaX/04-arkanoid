@@ -310,8 +310,13 @@ function draw() {
   ctx.textBaseline = 'top';
   ctx.textAlign = 'left';
   ctx.fillText( 'Puntaje: ' + gameState.score, 10, 10 );
-  ctx.textAlign = 'right';
-  ctx.fillText( 'Vidas: ' + gameState.lives, canvas.width - 10, 10 );
+
+  const lifeSize = 16;
+  const lifeGap = 6;
+  for ( let i = 0; i < gameState.lives; i++ ) {
+    const x = canvas.width - 10 - ( i + 1 ) * lifeSize - i * lifeGap;
+    drawSprite( ctx, 'ball', x, 10, lifeSize, lifeSize );
+  }
 }
 
 loadSpritesheet( loop );
