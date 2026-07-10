@@ -77,6 +77,7 @@ function snapBallToPaddle() {
 snapBallToPaddle();
 
 function launchBall() {
+  if ( gameState.status === 'gameover' || gameState.status === 'win' ) return;
   if ( !gameState.ball.stuckToPaddle ) return;
   gameState.ball.stuckToPaddle = false;
   gameState.ball.dx = BALL_SPEED * 0.6;
@@ -92,6 +93,8 @@ canvas.addEventListener( 'click', launchBall );
 
 function updateBall() {
   const ball = gameState.ball;
+
+  if ( gameState.status === 'gameover' || gameState.status === 'win' ) return;
 
   if ( ball.stuckToPaddle ) {
     snapBallToPaddle();
@@ -127,6 +130,24 @@ function updateBall() {
   }
 
   handleBlockCollision();
+  handleBallLoss();
+}
+
+function handleBallLoss() {
+  const ball = gameState.ball;
+  if ( ball.y - ball.radius <= canvas.height ) return;
+
+  gameState.lives -= 1;
+
+  if ( gameState.lives <= 0 ) {
+    gameState.status = 'gameover';
+    return;
+  }
+
+  ball.stuckToPaddle = true;
+  ball.dx = 0;
+  ball.dy = 0;
+  snapBallToPaddle();
 }
 
 const breakSound = new Audio( 'assets/sounds/break-sound.mp3' );
