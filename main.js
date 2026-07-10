@@ -237,7 +237,20 @@ function handleBlockCollision() {
 
 function checkWin() {
   const allDead = gameState.blocks.every( ( block ) => !block.alive );
-  if ( allDead ) gameState.status = 'win';
+  if ( !allDead ) return;
+
+  if ( gameState.level < 10 ) {
+    gameState.level += 1;
+    gameState.lives += 1;
+    gameState.blocks = generateBlocksForLevel( gameState.level );
+    gameState.ball.stuckToPaddle = true;
+    gameState.ball.dx = 0;
+    gameState.ball.dy = 0;
+    snapBallToPaddle();
+    gameState.status = 'levelup';
+  } else {
+    gameState.status = 'win';
+  }
 }
 
 function updateExplosions() {
