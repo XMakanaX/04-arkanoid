@@ -193,7 +193,7 @@ function checkWin() {
   const allDead = gameState.blocks.every( ( block ) => !block.alive );
   if ( !allDead ) return;
 
-  if ( gameState.level < 10 ) {
+  if ( gameState.level < MAX_LEVEL ) {
     gameState.level += 1;
     gameState.lives += 1;
     gameState.blocks = generateBlocksForLevel( gameState.level );
