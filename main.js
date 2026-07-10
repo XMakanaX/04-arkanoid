@@ -91,6 +91,13 @@ window.addEventListener( 'keydown', ( e ) => {
 
 canvas.addEventListener( 'click', launchBall );
 
+const bounceSound = new Audio( 'assets/sounds/ball-bounce.mp3' );
+
+function playBounce() {
+  bounceSound.currentTime = 0;
+  bounceSound.play();
+}
+
 function updateBall() {
   const ball = gameState.ball;
 
@@ -107,14 +114,17 @@ function updateBall() {
   if ( ball.x - ball.radius < 0 ) {
     ball.x = ball.radius;
     ball.dx *= -1;
+    playBounce();
   } else if ( ball.x + ball.radius > canvas.width ) {
     ball.x = canvas.width - ball.radius;
     ball.dx *= -1;
+    playBounce();
   }
 
   if ( ball.y - ball.radius < 0 ) {
     ball.y = ball.radius;
     ball.dy *= -1;
+    playBounce();
   }
 
   const paddle = gameState.paddle;
@@ -127,6 +137,7 @@ function updateBall() {
   if ( hitsPaddle ) {
     ball.y = paddle.y - ball.radius;
     ball.dy *= -1;
+    playBounce();
   }
 
   handleBlockCollision();
@@ -199,6 +210,7 @@ function handleBlockCollision() {
 
   breakSound.currentTime = 0;
   breakSound.play();
+  playBounce();
 
   checkWin();
 }
