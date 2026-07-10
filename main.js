@@ -182,6 +182,7 @@ function handleBlockCollision() {
 
   closestBlock.alive = false;
   gameState.score += 10;
+  updateHighScore();
 
   const hitX = closestX !== ball.x;
   const hitY = closestY !== ball.y;
@@ -216,9 +217,20 @@ function updateExplosions() {
   }
 }
 
+const HIGHSCORE_KEY = 'arkanoid-highscore';
+let highScore = parseInt( localStorage.getItem( HIGHSCORE_KEY ), 10 ) || 0;
+
+function updateHighScore() {
+  if ( gameState.score > highScore ) {
+    highScore = gameState.score;
+    localStorage.setItem( HIGHSCORE_KEY, String( highScore ) );
+  }
+}
+
 const overlay = document.getElementById( 'overlay' );
 const overlayTitle = document.getElementById( 'overlay-title' );
 const overlayScore = document.getElementById( 'overlay-score' );
+const overlayHighscore = document.getElementById( 'overlay-highscore' );
 const overlayRestart = document.getElementById( 'overlay-restart' );
 
 function updateOverlay() {
@@ -230,6 +242,7 @@ function updateOverlay() {
   overlay.classList.remove( 'hidden' );
   overlayTitle.textContent = gameState.status === 'win' ? '¡Victoria!' : 'Game Over';
   overlayScore.textContent = 'Puntaje: ' + gameState.score;
+  overlayHighscore.textContent = 'High score: ' + highScore;
 }
 
 function resetGame() {
@@ -279,6 +292,14 @@ function draw() {
     const frame = EXPLOSION_FRAMES[ explosion.color ][ frameIndex ];
     drawFrame( ctx, frame, explosion.x, explosion.y, BLOCK_W, BLOCK_H );
   }
+
+  ctx.fillStyle = '#fff';
+  ctx.font = '16px sans-serif';
+  ctx.textBaseline = 'top';
+  ctx.textAlign = 'left';
+  ctx.fillText( 'Puntaje: ' + gameState.score, 10, 10 );
+  ctx.textAlign = 'right';
+  ctx.fillText( 'Vidas: ' + gameState.lives, canvas.width - 10, 10 );
 }
 
 loadSpritesheet( loop );
