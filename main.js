@@ -19,10 +19,24 @@ const gameState = {
   blocks: [],
 };
 
-function buildBlocks() {
+function mulberry32( seed ) {
+  let a = seed;
+  return function () {
+    a |= 0;
+    a = ( a + 0x6D2B79F5 ) | 0;
+    let t = Math.imul( a ^ ( a >>> 15 ), 1 | a );
+    t = ( t + Math.imul( t ^ ( t >>> 7 ), 61 | t ) ) ^ t;
+    return ( ( t ^ ( t >>> 14 ) ) >>> 0 ) / 4294967296;
+  };
+}
+
+function generateBlocksForLevel( level ) {
+  const random = mulberry32( level );
+  const gapChance = level === 1 ? 0 : level * 0.03;
   const blocks = [];
   for ( let row = 0; row < BLOCK_ROWS; row++ ) {
     for ( let col = 0; col < BLOCK_COLS; col++ ) {
+      if ( random() < gapChance ) continue;
       blocks.push( {
         x: BLOCK_MARGIN_X + col * ( BLOCK_W + BLOCK_GAP ),
         y: BLOCK_MARGIN_TOP + row * ( BLOCK_H + BLOCK_GAP ),
@@ -36,7 +50,7 @@ function buildBlocks() {
   return blocks;
 }
 
-gameState.blocks = buildBlocks();
+gameState.blocks = generateBlocksForLevel( 1 );
 
 const PADDLE_SPEED = 8;
 const keys = { left: false, right: false };
@@ -261,7 +275,7 @@ function resetGame() {
   gameState.status = 'ready';
   gameState.score = 0;
   gameState.lives = 3;
-  gameState.blocks = buildBlocks();
+  gameState.blocks = generateBlocksForLevel( 1 );
   gameState.paddle.x = ( canvas.width - gameState.paddle.w ) / 2;
   gameState.ball.stuckToPaddle = true;
   gameState.ball.dx = 0;
