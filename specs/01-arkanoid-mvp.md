@@ -1,6 +1,6 @@
 # Arkanoid MVP jugable
 
-**Estado:** Draft
+**Estado:** aprobado
 **Depende de:** —
 **Fecha:** 2026-07-09
 **Objetivo:** Construir un MVP jugable de Arkanoid de un solo nivel, con paddle controlado por mouse/teclado, sistema de vidas, puntaje y high score persistente, usando los assets existentes (spritesheet y sonidos).
